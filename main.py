@@ -9,15 +9,15 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
 
 
-@app.route('/index')
+@app.route('/')
 def index():
-    return "Привет, Яндекс!"
+    return render_template('base.html', title='Вы тут найдете всё')
 
 
 def main():
     db_session.global_init("db/avito_db.db")
+    app.run(port=8080, host='127.0.0.1')
 
 
 if __name__ == '__main__':
     main()
-    app.run(port=8080, host='127.0.0.1')
