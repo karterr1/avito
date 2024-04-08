@@ -18,7 +18,6 @@ def main():
     db_session.global_init("db/avito_db.db")
 
 
-
 if __name__ == '__main__':
     main()
     app.run(port=8080, host='127.0.0.1')
