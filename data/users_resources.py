@@ -1,11 +1,12 @@
 from flask_restful import reqparse, abort, Api, Resource
-import db_session
-from user import Users
+from . import db_session
+from .user import Users
 from flask import jsonify
 from datetime import datetime
+from flask import request, make_response
 
 parser = reqparse.RequestParser()
-parser.add_argument('title', required=True)
+parser.add_argument('login', required=True)
 parser.add_argument('name', required=True)
 parser.add_argument('email', required=True)
 parser.add_argument('photo', required=True)
@@ -54,6 +55,6 @@ class UsersListResources(Resource):
 
 def abort_if_users_not_found(users_id):
     session = db_session.create_session()
-    users = session.query().get(users_id)
+    users = session.query(Users).get(users_id)
     if not users:
         abort(404, message=f"News {users_id} not found")

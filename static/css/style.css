@@ -1,0 +1,29 @@
+.flex {
+  display: flex;
+  justify-content: center;
+}
+
+.item {
+  width: 250;
+  margin-right: 20px;
+}
+
+.item img {
+  display: block;
+  width: 250;
+  height: 200;
+}
+
+.item h3 {
+  margin: 0;
+  text-transform: uppercase;
+  color: #b9f2ff;
+  font-size: 1.3vw;
+}
+
+.item p {
+  margin: 6px 0;
+  font-size: 1vw;
+  display: table;
+  width: 1px;
+}
