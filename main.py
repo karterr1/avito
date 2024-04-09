@@ -8,8 +8,8 @@ def index():
     photo = ["/static/img/one.PNG", "/static/img/two.PNG", "/static/img/one.PNG", "/static/img/two.PNG",
              "/static/img/one.PNG", "/static/img/two.PNG", "/static/img/one.PNG", "/static/img/two.PNG",
              "/static/img/one.PNG"]
-    return render_template('index.html', title='Вы тут найдете всё', photos=photo,
-                           css1=url_for('static', filename='css/style.css'))
+    return render_template('chernovik.html', title='Вы тут найдете всё', photos=photo,
+                           css1=url_for('static', filename='css/ww.css'))
 
 
 @app.route('/register', methods=['GET', 'POST'])
