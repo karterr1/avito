@@ -1,5 +1,7 @@
-img {
-    width: 250px;
-    height: 200px;
-    border-radius: 5px;
-}
+.thumb img  {
+    border: 2px solid #FFFFFF; /* Рамка вокруг фотографии */
+    padding: 15px; /* Расстояние от картинки до рамки */
+    background: #FFFFFF; /* Цвет фона */
+    margin-right: 10px; /* Отступ справа */
+    margin-bottom: 10px; /* Отступ снизу */
+   }
