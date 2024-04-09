@@ -4,9 +4,12 @@ from data.user import Users
 from flask import render_template
 from datetime import datetime as dt
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
+from flask_restful import Api
+
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
+api = Api(app)
 
 
 @app.route('/')
