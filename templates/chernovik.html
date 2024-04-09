@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{{css1}}"/>
+<body>
+<a class="thumb">
+    {% for i in photos %}
+    <img src={{i}} width="250" height="200">
+    {% endfor %}
+</a>
+</body>
+{% endblock %}
+
+
+
+
+
+
+
