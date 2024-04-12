@@ -31,7 +31,6 @@ def load_user(user_id):
 
 
 @app.route('/')
-@login_required
 def index():
     photo = [["/static/img/one.PNG", "/static/img/two.PNG", "/static/img/one.PNG", "/static/img/two.PNG"],
              ["/static/img/one.PNG", "/static/img/two.PNG", "/static/img/one.PNG", "/static/img/two.PNG"],
