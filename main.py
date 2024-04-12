@@ -6,11 +6,13 @@ from data import db_session
 from data.users_resources import UsersResource, UsersListResources
 from forms.login_form import LoginForm
 from forms.register_form import RegForm
+from forms.adverts_form import AdverForm
 import os
 from os.path import join, dirname, realpath
 from werkzeug.utils import secure_filename
 from flask_login import LoginManager, login_user
 from data.user import Users
+from data.adverts import Advert
 
 UPLOAD_FOLDER = os.path.abspath('static/img')
 
@@ -74,6 +76,23 @@ def login():
 @app.errorhandler(400)
 def bad_request(_):
     return make_response(jsonify({'error': 'Bad Request'}), 400)
+
+
+@app.route('/add', methods=['GET', 'POST'])
+def add_adverts():
+    form = AdverForm()
+    if form.validate_on_submit():
+        db_sess = db_session.create_session()
+        ad = Advert(
+            title=form.title.data,
+            city=form.city.data,
+            phone_number=form.phone_number.data,
+            address=form.address.data
+        )
+        db_sess.add(ad)
+        db_sess.commit()
+        return redirect('/')
+    return render_template('adverts_add.html', title='Объявление', form=form)
 
 
 def main():
