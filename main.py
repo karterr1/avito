@@ -9,7 +9,7 @@ from forms.register_form import RegForm
 import os
 from os.path import join, dirname, realpath
 from werkzeug.utils import secure_filename
-from flask_login import LoginManager, login_user
+from flask_login import LoginManager, login_user, logout_user, login_required
 from data.user import Users
 
 UPLOAD_FOLDER = os.path.abspath('static/img')
@@ -29,6 +29,7 @@ def load_user(user_id):
 
 
 @app.route('/')
+@login_required
 def index():
     photo = [["/static/img/one.PNG", "/static/img/two.PNG", "/static/img/one.PNG", "/static/img/two.PNG"],
              ["/static/img/one.PNG", "/static/img/two.PNG", "/static/img/one.PNG", "/static/img/two.PNG"],
@@ -45,6 +46,8 @@ def register():
             return render_template('registration.html', title='Регистрация', form=form, message='такая почта уже есть')
         if db_sess.query(Users).filter(Users.login == form.login.data).first():
             return render_template('registration.html', title='Регистрация', form=form, message='такой логин уже есть')
+        if form.password.data != form.password_again.data:
+            return render_template('registration.html', title='Регистрация', form=form, message='пароли не совпадают')
         if request.files['file']:
             file = request.files['file']
             filename = secure_filename(file.filename)
@@ -62,18 +65,45 @@ def register():
         db_sess.add(user)
         db_sess.commit()
         login_user(user)
-        return
+        return redirect('/')
     return render_template('registration.html', title='Регистрация', form=form)
 
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        db_sess = db_session.create_session()
+        user = db_sess.query(Users).filter(Users.login == form.login.data).first()
+        if user and user.check_password(form.password.data):
+            login_user(user, remember=form.remember_me.data)
+            return redirect("/")
+        return render_template('login.html',
+                               message="Неправильный логин или пароль",
+                               form=form)
+    return render_template('login.html', form=form, title='Авторизация')
+
+
+@app.route('/profile/<int:id>')
+def profile(id):
     pass
 
 
 @app.errorhandler(400)
 def bad_request(_):
     return make_response(jsonify({'error': 'Bad Request'}), 400)
+
+
+@app.errorhandler(401)
+def unauthorized(_):
+    return redirect('/login')
+
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect("/")
 
 
 def main():
