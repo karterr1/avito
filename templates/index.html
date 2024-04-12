@@ -1,19 +1,25 @@
 {% extends "base.html" %}
 
 {% block content %}
-<link rel="stylesheet" type="text/css" href="{{css1}}"/>
-
-<div class="flex">
-    {% for i in photos %}
-        <div class="item">
-            <img src={{i}} alt="">
-            <h3>Какое то название</h3>
-        </div>
-    {% endfor %}
+<div>
+    <table cellspacing="0" cellpadding="0" align=center>
+        {% for i in photos %}
+        <tr>
+            <td width="300" height="250"><img src={{i[0]}} alt="" width="250"
+                                              height="200">
+            </td>
+            <td width="300" height="250"><img src=/static/img/one.PNG alt="" width="250"
+                                              height="200"></td>
+            <td width="300" height="250"><img src=/static/img/one.PNG alt="" width="250"
+                                              height="200"></td>
+            <td width="300" height="250"><img src=/static/img/one.PNG alt="" width="250"
+                                              height="200"></td>
+        </tr>
+        {% endfor %}
+    </table>
 </div>
-
-
 {% endblock %}
+
 
 
 

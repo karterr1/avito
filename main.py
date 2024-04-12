@@ -5,11 +5,10 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    photo = ["/static/img/one.PNG", "/static/img/two.PNG", "/static/img/one.PNG", "/static/img/two.PNG",
-             "/static/img/one.PNG", "/static/img/two.PNG", "/static/img/one.PNG", "/static/img/two.PNG",
-             "/static/img/one.PNG"]
-    return render_template('chernovik.html', title='Вы тут найдете всё', photos=photo,
-                           css1=url_for('static', filename='css/ww.css'))
+    photo = [["/static/img/one.PNG", "/static/img/two.PNG", "/static/img/one.PNG", "/static/img/two.PNG"],
+             ["/static/img/one.PNG", "/static/img/two.PNG", "/static/img/one.PNG", "/static/img/two.PNG"],
+             ["/static/img/one.PNG", "/static/img/two.PNG"]]
+    return render_template('index.html', title='Вы тут найдете всё', photos=photo)
 
 
 @app.route('/register', methods=['GET', 'POST'])

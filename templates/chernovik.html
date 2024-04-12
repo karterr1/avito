@@ -2,18 +2,15 @@
 
 {% block content %}
 <link rel="stylesheet" type="text/css" href="{{css1}}"/>
-<body>
-<a class="thumb">
+
+<div class="flex">
     {% for i in photos %}
-    <img src={{i}} width="250" height="200">
+        <div class="item">
+            <img src={{i}} alt="">
+            <h3>Какое то название</h3>
+        </div>
     {% endfor %}
-</a>
-</body>
+</div>
+
+
 {% endblock %}
-
-
-
-
-
-
-
