@@ -14,15 +14,17 @@
 <header>
     <nav class="navbar navbar-light bg-dark">
         <a class="navbar-light" href="/"><h1>Авито</h1></a>
+        <div>
+            <a class="btn btn-success" href="/add">Разместить объявление</a>
         {% if current_user.is_authenticated %}
-        <a class="navbar-brand" href="/logout" id="profile_icon">{{ current_user.login }}</a>
+        <a class="navbar-brand" href={f"/profile/{{current_user.id}}} id="profile_name">{{current_user.login}}</a>
         {% else %}
         <p>
             <a class="btn btn-primary " href="/register">Зарегистрироваться</a>
             <a class="btn btn-success" href="/login">Войти</a>
-            <a class="btn btn-success" href="/add">Разместить объявление</a>
         </p>
         {% endif %}
+        </div>
     </nav>
 
 </header>

@@ -3,7 +3,7 @@ from wtforms import PasswordField, StringField, TextAreaField, SubmitField, Emai
 from wtforms.validators import DataRequired
 
 
-class AdverForm(FlaskForm):
+class AdvertForm(FlaskForm):
     title = StringField('Название', validators=[DataRequired()])
     city = StringField('Город', validators=[DataRequired()])
     phone_number = StringField('Номер телефона', validators=[DataRequired()])
