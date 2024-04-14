@@ -6,7 +6,7 @@ from data.users_resources import UsersResource, UsersListResources
 from forms.login_form import LoginForm
 from forms.register_form import RegForm
 from forms.adverts_form import AdvertForm
-import os
+from os.path import join, normpath
 from werkzeug.utils import secure_filename
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from data.user import Users
@@ -32,10 +32,6 @@ def index():
     photo = [["/static/img/one.PNG", "/static/img/two.PNG", "/static/img/one.PNG", "/static/img/two.PNG"],
              ["/static/img/one.PNG", "/static/img/two.PNG", "/static/img/one.PNG", "/static/img/two.PNG"],
              ["/static/img/one.PNG", "/static/img/two.PNG"]]
-    params = {
-        'title': 'Вы тут найдете всё',
-        'photo': photo
-    }
     return render_template('index.html', title='Вы тут найдете всё', photos=photo)
 
 
@@ -53,10 +49,10 @@ def register():
         if request.files['file']:
             file = request.files['file']
             filename = secure_filename(file.filename)
-            path = os.path.join(app.config['UPLOAD_FOLDER']['PROFILE_IMAGES_FOLDER'], filename)
+            path = normpath(join(app.config['UPLOAD_FOLDER']['PROFILE_IMAGES_FOLDER'], filename))
             file.save(path)
         else:
-            path = os.path.join(app.config['UPLOAD_FOLDER']['PROFILE_IMAGES_FOLDER'], 'default_image.png')
+            path = join(app.config['UPLOAD_FOLDER']['PROFILE_IMAGES_FOLDER'], 'default_image.png')
         user = Users(
             login=form.login.data,
             email=form.email.data,
@@ -90,7 +86,7 @@ def login():
 def profile(id):
     session = db_session.create_session()
     user = session.query(Users).filter(Users.id == id).first()
-    print(user.login)
+    print(user.photo)
     return render_template('profile.html', title='Профиль', user=user)
 
 

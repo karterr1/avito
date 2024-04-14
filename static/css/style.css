@@ -31,3 +31,8 @@
 #profile_name {
     color: white;
 }
+
+.profile_image {
+    width: 200px;
+    height: 200px;
+}
