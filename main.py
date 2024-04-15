@@ -1,6 +1,5 @@
 import datetime
 import os.path
-
 from flask import Flask, render_template, url_for, jsonify, make_response, request, redirect
 from flask_restful import reqparse, abort, Api, Resource
 from data import db_session
@@ -32,6 +31,7 @@ def load_user(user_id):
 
 @app.route('/')
 def index():
+
     photo = [["/static/img/one.PNG", "/static/img/two.PNG", "/static/img/one.PNG", "/static/img/two.PNG"],
              ["/static/img/one.PNG", "/static/img/two.PNG", "/static/img/one.PNG", "/static/img/two.PNG"],
              ["/static/img/one.PNG", "/static/img/two.PNG"]]
@@ -129,16 +129,7 @@ def add_adverts():
                 advert_id=advert.id
             ))
         session.commit()
-        return 'OK'
-        # advert = Advert(
-        #     title=form.title.data,
-        #     description=form.description.data,
-        #     city=form.city.data,
-        #     address=form.address.data,
-        #     created_date=datetime.datetime.now(),
-        #     user_id=current_user.id,
-        #     category_id=request.form['category'],
-        # )
+        return redirect('/')
     return render_template('adverts_add.html', title='Объявление', form=form)
 
 
