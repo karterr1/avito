@@ -1,4 +1,6 @@
 import datetime
+import os.path
+
 from flask import Flask, render_template, url_for, jsonify, make_response, request, redirect
 from flask_restful import reqparse, abort, Api, Resource
 from data import db_session
@@ -11,6 +13,7 @@ from werkzeug.utils import secure_filename
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from data.user import Users
 from data.adverts import Advert
+from data.adverts_images import AdvertsImages
 import config
 
 app = Flask(__name__)
@@ -96,11 +99,36 @@ def bad_request(_):
 
 
 @app.route('/add', methods=['GET', 'POST'])
+@login_required
 def add_adverts():
     form = AdvertForm()
     if form.validate_on_submit():
-        print(request.files)
         session = db_session.create_session()
+        advert = Advert(
+            title=form.title.data,
+            description=form.description.data,
+            likes_count=0,
+            city=form.city.data,
+            address=form.address.data,
+            created_date=datetime.datetime.now(),
+            user_id=current_user.id,
+            price=form.price.data,
+            category_id=request.form['category'],
+        )
+        session.add(advert)
+        session.commit()
+        files = request.files.getlist('files')
+        for file in files:
+            filename = secure_filename(file.filename)
+            path = normpath(join(app.config['UPLOAD_FOLDER']['ADVERTS_IMAGES_FOLDER'], filename))
+            if not os.path.isfile(path):
+                file.save(path)
+            session.add(AdvertsImages(
+                path=path,
+                advert_id=advert.id
+            ))
+        session.commit()
+        return 'OK'
         # advert = Advert(
         #     title=form.title.data,
         #     description=form.description.data,

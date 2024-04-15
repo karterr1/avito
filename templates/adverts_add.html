@@ -22,7 +22,7 @@
     {% endfor %}
     </p>
     <p>
-        <label for="select_category">Категория</label>
+        <label>Категория</label>
         <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" id="category" name="category">
             <option selected value="2">Электроника</option>
             <option value="1">Животные</option>
@@ -30,7 +30,7 @@
             <option value="4">Услуги</option>
             <option value="5">Работа</option>
             <option value="6">Недвижимость</option>
-            <option value="7">Автомобили</option>
+            <option value="7">Транспорт</option>
         </select>
     </p>
     <p>
@@ -46,6 +46,15 @@
         {{ form.address.label }}<br>
         {{ form.address(class="form-control") }}<br>
         {% for error in form.address.errors %}
+    <div class="alert alert-danger" role="alert">
+        {{ error }}
+    </div>
+    {% endfor %}
+    </p>
+        <p>
+        {{ form.price.label }}<br>
+        {{ form.price(class="form-control") }}<br>
+        {% for error in form.price.errors %}
     <div class="alert alert-danger" role="alert">
         {{ error }}
     </div>

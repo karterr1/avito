@@ -8,4 +8,5 @@ class AdvertForm(FlaskForm):
     city = StringField('Город', validators=[DataRequired()])
     description = StringField('Описание', validators=[DataRequired()])
     address = StringField('Адрес', validators=[DataRequired()])
+    price = IntegerField('Цена', validators=[DataRequired()])
     submit = SubmitField('Выложить')
