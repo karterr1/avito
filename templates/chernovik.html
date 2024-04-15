@@ -1,12 +1,32 @@
 {% extends "base.html" %}
-
 {% block content %}
-<link rel="stylesheet" type="text/css" href="{{css1}}"/>
-<body>
-<a class="thumb">
-    {% for i in photos %}
-    <img src={{i}} width="250" height="200">
-    {% endfor %}
+<html>
+<head>
+    <title>Блочная вёрстка</title>
+	<link rel="stylesheet" type="text/css" href="{{css1}}"/>
+</head>
+<a>
+<div id="container">
+	<div id="header">
+	<h2>header (шапка сайта)</h2>
+	</div>
+
+	<div id="navigation">
+	<h2>Блок навигации</h2>
+	</div>
+
+	<div id="sidebar">
+	<h2>Левая панель</h2>
+	</div>
+	<div id="content">
+	<h2>Основной контент страницы</h2>
+	</div>
+	<div id="clear">
+	</div>
+	<div id="footer">
+	<h2>footer (низ сайта)</h2>
+	</div>
+</div>
 </a>
-</body>
+</html>
 {% endblock %}
