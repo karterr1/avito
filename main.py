@@ -86,12 +86,9 @@ def login():
 def profile(id):
     session = db_session.create_session()
     user = session.query(Users).filter(Users.id == id).first()
-    print(user.photo)
     photo = session.query(Users).all()
-    '''for i in photo:
-        print(i.photo)'''
     return render_template('profile.html', title='Профиль', user=user, photos=photo,
-                           css1=url_for('static', filename='css/ww.css'))
+                           css1=url_for('static', filename='css/style_profile.css'))
 
 
 @app.errorhandler(400)
