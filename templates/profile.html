@@ -1,7 +1,38 @@
 {% extends "base.html" %}
 {% block content %}
-<div>
-    <img class="profile_image" src="/{{user.photo}}" alt="изображение" height="500" width="500">
-    {{user.login}}
+<head>
+    <link rel="stylesheet" type="text/css" href="{{css1}}"/>
+</head>
+<div id=na>
+    <header>
+        <h1 style="position: relative; left: -150px;">Профиль</h1>
+    </header>
+    <style>
+        body {
+              background: #cccccc;
+       }
+    </style>
+    <main>
+        <div id=hi>
+            <nav>
+                <div>
+                    <img class="profile_image" src="/{{user.photo}}" alt="изображение" height="200" width="200"
+                         style="position: relative; left: -150px;">
+                </div>
+            </nav>
+            <section>
+                <h4 style="position: relative; left: -150px;">{{user.login}}</h4>
+
+            </section>
+        </div>
+        <aside>
+            <h2>Ваши объявления</h2>
+            <hr style="position: relative; left: -500px;" width="178%" color="black"/>
+            {% for i in photos %}
+            <p><img src="/{{i.photo}}" alt="изображение" height="200" width="300"></p>
+            <h3>dwdw233</h3>
+            {% endfor %}
+        </aside>
+    </main>
 </div>
 {% endblock %}
