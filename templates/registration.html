@@ -39,6 +39,15 @@
         {% endfor %}
     </p>
     <p>
+        {{ form.phone_number.label }}<br>
+        {{ form.phone_number(class="form-control", type="password") }}<br>
+        {% for error in form.phone_number.errors %}
+            <div class="alert alert-danger" role="alert">
+                {{ error }}
+            </div>
+        {% endfor %}
+    </p>
+    <p>
         <input type="file" name="file">
     </p>
     <p>

@@ -12,5 +12,5 @@ class AdvertsImages(SqlAlchemyBase, UserMixin, SerializerMixin):
     id = sqlalchemy.Column(sqlalchemy.Integer,
                            primary_key=True, autoincrement=True)
     path = sqlalchemy.Column(sqlalchemy.String, nullable=True)
-    advert_od = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey('adverts.images_id'))
+    advert_id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey('adverts.images_id'))
     advert = orm.relationship('Advert')

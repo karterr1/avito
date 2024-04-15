@@ -99,17 +99,17 @@ def bad_request(_):
 def add_adverts():
     form = AdvertForm()
     if form.validate_on_submit():
-        print('ale')
-        db_sess = db_session.create_session()
-        ad = Advert(
-            title=form.title.data,
-            city=form.city.data,
-            phone_number=form.phone_number.data,
-            address=form.address.data
-        )
-        db_sess.add(ad)
-        db_sess.commit()
-        return redirect('/')
+        print(request.files)
+        session = db_session.create_session()
+        # advert = Advert(
+        #     title=form.title.data,
+        #     description=form.description.data,
+        #     city=form.city.data,
+        #     address=form.address.data,
+        #     created_date=datetime.datetime.now(),
+        #     user_id=current_user.id,
+        #     category_id=request.form['category'],
+        # )
     return render_template('adverts_add.html', title='Объявление', form=form)
 
 

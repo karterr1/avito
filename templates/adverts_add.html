@@ -2,6 +2,7 @@
 {% block content %}
 <form action="" method="post" enctype="multipart/form-data">
     {{form.hidden_tag()}}
+    {{ form.csrf_token }}
     <p>
         {{ form.title.label }}<br>
         {{ form.title(class="form-control") }}<br>
@@ -21,33 +22,45 @@
     {% endfor %}
     </p>
     <p>
-        {{ form.phone_number.label }}<br>
-        {{ form.phone_number(class="form-control") }}<br>
-        {% for error in form.phone_number.errors %}
+        <label for="select_category">Категория</label>
+        <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" id="category" name="category">
+            <option selected value="2">Электроника</option>
+            <option value="1">Животные</option>
+            <option value="3">Личные вещи</option>
+            <option value="4">Услуги</option>
+            <option value="5">Работа</option>
+            <option value="6">Недвижимость</option>
+            <option value="7">Автомобили</option>
+        </select>
+    </p>
+    <p>
+        {{ form.description.label }}<br>
+        {{ form.description(class="form-control") }}<br>
+        {% for error in form.description.errors %}
     <div class="alert alert-danger" role="alert">
         {{ error }}
     </div>
     {% endfor %}
     </p>
-    <div class="form-group">
-        <label for="classSelect">Выберите категорию товара</label>
-        <select class="form-control" id="classSelect" name="class">
-            <option>Транспорт</option>
-            <option>Животные</option>
-            <option>Одежда</option>
-            <option>Недвижимость</option>
-            <option>Электроника</option>
-            <option>Для дома и дачи</option>
-            <option>Услуги</option>
-            <option>Работа</option>
-        </select>
-    </div>
-    <div class="form-group">
-        <label for="about">Описание товара или услуги</label>
-        <textarea class="form-control" id="about" rows="3" name="about"></textarea>
-    </div>
     <p>
-        <input type="file" name="file">
+        {{ form.address.label }}<br>
+        {{ form.address(class="form-control") }}<br>
+        {% for error in form.address.errors %}
+    <div class="alert alert-danger" role="alert">
+        {{ error }}
+    </div>
+    {% endfor %}
+    </p>
+    <p>
+        <input type="file" name="files" multiple id="fileInput">
+        <script>
+            document.getElementById('fileInput').addEventListener('change', function() {
+                if (this.files.length > 5) {
+                    alert('Можно загрузить только до 5 файлов');
+                    this.value = '';
+                }
+            });
+        </script>
     </p>
     <p>
         {{ form.submit(type="submit", class="btn btn-primary") }}
