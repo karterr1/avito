@@ -89,6 +89,7 @@ def login():
 def profile(id):
     session = db_session.create_session()
     user = session.query(Users).filter(Users.id == id).first()
+    #adverts = session.query(Advert).filter(Users.id == id).first()
     photo = session.query(Users).all()
     return render_template('profile.html', title='Профиль', user=user, photos=photo,
                            css1=url_for('static', filename='css/style_profile.css'))
