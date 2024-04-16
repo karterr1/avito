@@ -32,10 +32,37 @@ def load_user(user_id):
 
 @app.route('/')
 def index():
-    photo = [["/static/img/one.PNG", "/static/img/two.PNG", "/static/img/one.PNG", "/static/img/two.PNG"],
+    session = db_session.create_session()
+    adverts = session.query(AdvertsImages).all()
+    photo = []
+    for i in adverts:
+        photo.append(i.path)
+    '''photo = [["/static/img/one.PNG", "/static/img/two.PNG", "/static/img/one.PNG", "/static/img/two.PNG"],
              ["/static/img/one.PNG", "/static/img/two.PNG", "/static/img/one.PNG", "/static/img/two.PNG"],
-             ["/static/img/one.PNG", "/static/img/two.PNG"]]
+             ["/static/img/one.PNG", "/static/img/two.PNG"]]'''
     return render_template('index.html', title='Вы тут найдете всё', photos=photo)
+
+
+@app.route('/profile/<int:id>')
+def profile(id):
+    images = []
+    session = db_session.create_session()
+    user = session.query(Users).filter(Users.id == id).first()
+    adverts = session.query(Advert).filter(Advert.user_id == id)
+    for i in adverts:
+        photo = []
+        advert_image = session.query(AdvertsImages).filter(AdvertsImages.advert_id == i.id)
+        for j in advert_image:
+            photo.append(j.path)
+        n = i, photo
+        images.append(n)
+    if len(images) > 0:
+        photo = session.query(Users).all()
+        return render_template('profile.html', title='Профиль', user=user, photos=photo, advert=images,
+                               css1=url_for('static', filename='css/style_profile.css'))
+    photo = session.query(Users).all()
+    return render_template('profile.html', title='Профиль', user=user, photos=photo, advert=adverts,
+                           css1=url_for('static', filename='css/style_profile.css'))
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -60,6 +87,7 @@ def register():
             login=form.login.data,
             email=form.email.data,
             photo=path,
+            phone_number=form.phone_number.data,
             created_date=datetime.datetime.now()
         )
         user.set_password(form.password.data)
@@ -83,16 +111,6 @@ def login():
                                message="Неправильный логин или пароль",
                                form=form)
     return render_template('login.html', form=form, title='Авторизация')
-
-
-@app.route('/profile/<int:id>')
-def profile(id):
-    session = db_session.create_session()
-    user = session.query(Users).filter(Users.id == id).first()
-    #adverts = session.query(Advert).filter(Users.id == id).first()
-    photo = session.query(Users).all()
-    return render_template('profile.html', title='Профиль', user=user, photos=photo,
-                           css1=url_for('static', filename='css/style_profile.css'))
 
 
 @app.errorhandler(400)
@@ -130,16 +148,7 @@ def add_adverts():
                 advert_id=advert.id
             ))
         session.commit()
-        return 'OK'
-        # advert = Advert(
-        #     title=form.title.data,
-        #     description=form.description.data,
-        #     city=form.city.data,
-        #     address=form.address.data,
-        #     created_date=datetime.datetime.now(),
-        #     user_id=current_user.id,
-        #     category_id=request.form['category'],
-        # )
+        return redirect('/')
     return render_template('adverts_add.html', title='Объявление', form=form)
 
 
