@@ -1,27 +1,16 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="d1">
-  <form method="GET">
-  <input type="text" placeholder="Искать здесь...">
-  <button type="submit"></button>
-  </form>
-</div>
 <div>
     <table cellspacing="0" cellpadding="0" align=center>
-        {% for i in photos %}
         <tr>
-            <td width="300" height="250"><img src={{i[0]}} alt="" width="250"
-                                              height="200">Привет
+            {% for i in photos %}
+            {% if loop.index != loop.last and loop.index % 4 != 0%}
+            <td width="300" height="250"><img src={{i}} alt="" width="250"
+                                              height="200">
             </td>
-            <td width="300" height="250"><img src=/static/img/one.PNG alt="" width="250"
-                                              height="200">Привет</td>
-            <td width="300" height="250"><img src=/static/img/one.PNG alt="" width="250"
-                                              height="200">Привет</td>
-            <td width="300" height="250"><img src=/static/img/one.PNG alt="" width="250"
-                                              height="200">Привет</td>
+            {% endif %}
         </tr>
-        {% endfor %}
     </table>
 </div>
 {% endblock %}

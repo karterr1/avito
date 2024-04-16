@@ -9,29 +9,38 @@
     </header>
     <style>
         body {
-              background: #cccccc;
+              background: #000029;
+              color: #ffffff;
        }
+
+
+
     </style>
     <main>
         <div id=hi>
             <nav>
                 <div>
                     <img class="profile_image" src="/{{user.photo}}" alt="изображение" height="200" width="200"
-                         >
+                    >
                 </div>
             </nav>
             <section>
                 <h4>{{user.login}}</h4>
-
+                <h8>{{user.email}}</h8>
+                <h11>+{{user.phone_number}}</h11>
             </section>
         </div>
         </nav>
         <aside>
             <h2>Ваши объявления</h2>
             <hr style="position: relative; left: -500px;" width="178%" color="black"/>
-            {% for i in photos %}
-            <p><img src="/{{i.photo}}" alt="изображение" height="200" width="300"></p>
-            <h3>dwdw233</h3>
+            {% for i in advert %}
+            {% for j in i[1] %}
+            <p><img src="/{{j}}" alt="изображение" height="200" width="300"></p>
+            {% endfor %}
+            <h3>{{i[0].title}}</h3>
+            <h5>{{i[0].description}}</h5>
+            <hr width="50%" color="black"/>
             {% endfor %}
         </aside>
     </main>
