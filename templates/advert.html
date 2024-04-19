@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block content %}
+<head>
+    <link rel="stylesheet" type="text/css" href="{{css1}}"/>
+</head>
+<div id=na>
+    <header>
+        <h1>{{advert.title}}</h1>
+    </header>
+    <a class="btn btn-danger" href="/delete_advert/{{advert.id}}">Удалить объявление</a>
+    <a class="btn btn-info" href="/redact_advert/{{advert.id}}">Редактировать объявление</a>
+    <style>
+        body {
+              background: #000029;
+              color: #ffffff;
+       }
+
+    </style>
+</div>
+    <main>
+        <div id=hi>
+            <nav>
+                <div>
+                    <img class="profile_image" src="/{{photos[0].path}}" alt="изображение" height="500" width="700"
+                    >
+                </div>
+            </nav>
+            <section>
+                <h4>{{advert.price}}</h4>
+            </section>
+        </div>
+        </nav>
+    </main>
+{% endblock %}

@@ -62,6 +62,14 @@ def profile(id):
                            css1=url_for('static', filename='css/style_profile.css'))
 
 
+@app.route('/advert/<int:advert_id>', methods=['GET', 'POST'])
+def advert(advert_id):
+    session = db_session.create_session()
+    advert = session.query(Advert).get(advert_id)
+    photos = session.query(AdvertsImages).filter(AdvertsImages.advert_id == advert_id).all()
+    return render_template('advert.html', title='Объявление', advert=advert, photos=photos)
+
+
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegForm()
@@ -159,6 +167,36 @@ def unauthorized(_):
 def logout():
     logout_user()
     return redirect("/")
+
+
+@app.route('/delete_advert/<advert_id>')
+@login_required
+def delete_advert(advert_id):
+    session = db_session.create_session()
+    advert = session.query(Advert).filter(Advert.id == advert_id).first()
+    photos = session.query(AdvertsImages).filter(AdvertsImages.advert_id == advert_id)
+    session.delete(advert)
+    for i in photos:
+        session.delete(i)
+    session.commit()
+    return redirect('/')
+
+
+@app.route('/redact_advert/<advert_id>', methods=['POST', 'GET'])
+def redact_advert(advert_id):
+    form = AdvertForm()
+    if form.validate_on_submit():
+        session = db_session.create_session()
+        advert = session.query(Advert).get(advert_id)
+        advert.title = form.title.data
+        advert.description = form.description.data
+        advert.city = form.city.data
+        advert.price = form.price.data
+        advert.address = form.address.data
+        session.commit()
+        return redirect(f'/advert/{advert_id}')
+
+    return render_template('adverts_add.html', title='редактирование объявления', form=form)
 
 
 def main():
