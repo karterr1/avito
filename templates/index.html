@@ -1,6 +1,12 @@
 {% extends "base.html" %}
 
 {% block content %}
+<div class="d1">
+  <form method="GET" action="/">
+  <input type="text" placeholder="Искать здесь..." name="search_input">
+  <button type="submit"></button>
+  </form>
+</div>
 <div>
     <table cellspacing="0" cellpadding="0" align=center>
         <tr>
@@ -10,6 +16,7 @@
                                               height="200">
             </td>
             {% endif %}
+            {% endfor %}
         </tr>
     </table>
 </div>

@@ -37,9 +37,6 @@ def index():
     photo = []
     for i in adverts:
         photo.append(i.path)
-    '''photo = [["/static/img/one.PNG", "/static/img/two.PNG", "/static/img/one.PNG", "/static/img/two.PNG"],
-             ["/static/img/one.PNG", "/static/img/two.PNG", "/static/img/one.PNG", "/static/img/two.PNG"],
-             ["/static/img/one.PNG", "/static/img/two.PNG"]]'''
     return render_template('index.html', title='Вы тут найдете всё', photos=photo)
 
 
