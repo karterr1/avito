@@ -44,7 +44,7 @@ def index():
     n = 0
     for i in advert:
         image = session.query(AdvertsImages).filter(AdvertsImages.advert_id == i.id).first()
-        name = image.path, i.title, i.price
+        name = image.path, i.title, i.price, i.id
         smt.append(name)
     for i in range(1, len(smt) + 1):
         n += 1
@@ -57,7 +57,7 @@ def index():
             n = 1
         if i == len(smt):
             if n % 5 != 0:
-                photos.append(photo)
+                photos.append(photo)  # мы не знаем что это, но это работает
             else:
                 photos.append(smt[i - 1])
     return render_template('index.html', title='Вы тут найдете всё', photos=photos, photo=photo)
