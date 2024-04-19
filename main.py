@@ -30,14 +30,37 @@ def load_user(user_id):
     return db_sess.query(Users).get(user_id)
 
 
+n = 0
+
+
 @app.route('/')
 def index():
     session = db_session.create_session()
     adverts = session.query(AdvertsImages).all()
+    advert = session.query(Advert).all()
+    smt = []
     photo = []
-    for i in adverts:
-        photo.append(i.path)
-    return render_template('index.html', title='Вы тут найдете всё', photos=photo)
+    photos = []
+    n = 0
+    for i in advert:
+        image = session.query(AdvertsImages).filter(AdvertsImages.advert_id == i.id).first()
+        name = image.path, i.title, i.price
+        smt.append(name)
+    for i in range(1, len(smt) + 1):
+        n += 1
+        if n % 5 != 0:
+            photo.append(smt[i - 1])
+        else:
+            photos.append(photo)
+            photo = []
+            photo.append(smt[i - 1])
+            n = 1
+        if i == len(smt):
+            if n % 5 != 0:
+                photos.append(photo)
+            else:
+                photos.append(smt[i - 1])
+    return render_template('index.html', title='Вы тут найдете всё', photos=photos, photo=photo)
 
 
 @app.route('/profile/<int:id>')

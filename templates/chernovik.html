@@ -1,32 +1,31 @@
 {% extends "base.html" %}
+
 {% block content %}
-<html>
-<head>
-    <title>Блочная вёрстка</title>
-	<link rel="stylesheet" type="text/css" href="{{css1}}"/>
-</head>
-<a>
-<div id="container">
-	<div id="header">
-	<h2>header (шапка сайта)</h2>
-	</div>
-
-	<div id="navigation">
-	<h2>Блок навигации</h2>
-	</div>
-
-	<div id="sidebar">
-	<h2>Левая панель</h2>
-	</div>
-	<div id="content">
-	<h2>Основной контент страницы</h2>
-	</div>
-	<div id="clear">
-	</div>
-	<div id="footer">
-	<h2>footer (низ сайта)</h2>
-	</div>
+<div class="d1">
+  <form method="GET" action="/">
+  <input type="text" placeholder="Искать здесь..." name="search_input">
+  <button type="submit"></button>
+  </form>
 </div>
-</a>
-</html>
+<div>
+    <table cellspacing="0" cellpadding="0" align=center>
+        <tr>
+            {% for i in photos %}
+            {% if loop.index != loop.last %}
+            <td width="300" height="250"><img src={{i}} alt="" width="250"
+                                              height="200">
+            </td>
+            {% endif %}
+            {% endfor %}
+        </tr>
+    </table>
+</div>
 {% endblock %}
+
+
+
+
+
+
+
+
