@@ -89,8 +89,10 @@ def profile(id):
 def advert(advert_id):
     session = db_session.create_session()
     advert = session.query(Advert).get(advert_id)
+    user = session.query(Users).filter(Users.id == advert.user_id).first()
     photos = session.query(AdvertsImages).filter(AdvertsImages.advert_id == advert_id).all()
-    return render_template('advert.html', title='Объявление', advert=advert, photos=photos)
+    return render_template('advert.html', title='Объявление',
+                           css1=url_for('static', filename='css/style_advert.css'), advert=advert, photos=photos, user=user)
 
 
 @app.route('/register', methods=['GET', 'POST'])

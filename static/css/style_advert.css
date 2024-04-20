@@ -1,0 +1,28 @@
+html, body {
+ width: 100%;
+ height: 100%;
+ overflow: hidden;
+}
+
+#parent {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+#parent #left {
+  flex-grow: 1;
+
+}
+
+#parent #right {
+  flex-grow: 1;
+}
+
+#profile{
+    border-radius: 50px;
+    margin-top:1pt;
+    margin-right:1pt;
+    margin-left:1pt;
+    margin-bottom:1pt
+}
