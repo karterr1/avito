@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block content %}
+<head>
+    <link rel="stylesheet" type="text/css" href="{{css1}}"/>
+</head>
+<div id=na>
+    <header>
+        <h1>Профиль</h1>
+    </header>
+    <main>
+        <div id=hi>
+            <nav>
+                <div>
+                    <img class="profile_image" src="/{{user.photo}}" alt="изображение" height="200" width="200"
+                    >
+                </div>
+            </nav>
+            <section>
+                <h4>{{user.login}}</h4>
+                <ul>
+                    <li><h5>{{user.email}}</h5></li>
+                    <li><h5>+{{user.phone_number}}</h5></li></ul>
+            </section>
+        </div>
+        </nav>
+        <aside>
+            <h2>Ваши объявления</h2>
+            <hr style="position: relative; left: -500px;" width="178%" color="black"/>
+            {% for i in advert %}
+            <p><img src="/{{i[1]}}" alt="изображение" height="200" width="300"></p>
+            <a href="/advert/{{i[0].id}}"><h3>{{i[0].title}}</h3></a>
+            <h5>{{i[0].price}}₽</h5>
+            <hr width="50%" color="black"/>
+            {% endfor %}
+        </aside>
+    </main>
+</div>
+{% endblock %}

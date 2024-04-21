@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block content %}
+
+<head>
+    <link rel="stylesheet" type="text/css" href="{{css1}}"/>
+</head>
+<body>
+<div id="parent">
+    <div id="left">
+        <div id=na>
+            <header>
+                <h1></h1>
+            </header>
+            {% if advert.user_id == current_user.id %}
+            <a class="btn btn-danger" href="/delete_advert/{{advert.id}}">Удалить объявление</a>
+            <a class="btn btn-info" href="/redact_advert/{{advert.id}}">Редактировать объявление</a>
+            {% endif %}
+        </div>
+        <main>
+            <div id=hi>
+                <nav>
+                    <div>
+                        <img src="/{{photos[0].path}}" alt="изображение" height="500" width="700"
+                        >
+                    </div>
+                </nav>
+            </div>
+            </nav>
+            <section><h1>{{advert.title}}</h1>
+            </section>
+        </main>
+    </div>
+    <div id="right">
+        <section>
+            <ul>
+                <li><p>
+                    <h2>Стоимость: {{advert.price}}₽</h2></p></li>
+                <li><p>
+                    <h3>Описание: {{advert.description}}</h3></p></li>
+                <li><p>
+                    <h3>Город: {{advert.city}}</h3></p></li>
+                <li><p>
+                    <h3>Адрес: {{advert.address}}</h3></p></li>
+            </ul>
+        </section>
+        <hr style="position: relative; left: 1px;" width="100%" color="black"/>
+        <div>
+            <h2><em>@{{user.login}}</em></h2>
+            <img id=profile src="/{{user.photo}}" alt="изображение" height="150" width="150">
+            <h4>Номер телефона: <em>+{{user.phone_number}}</em></h4>
+        </div>
+    </div>
+</div>
+</body>
+
+{% endblock %}
