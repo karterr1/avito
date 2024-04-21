@@ -11,8 +11,10 @@
             <header>
                 <h1></h1>
             </header>
+            {% if advert.user_id == current_user.id %}
             <a class="btn btn-danger" href="/delete_advert/{{advert.id}}">Удалить объявление</a>
             <a class="btn btn-info" href="/redact_advert/{{advert.id}}">Редактировать объявление</a>
+            {% endif %}
         </div>
         <main>
             <div id=hi>
