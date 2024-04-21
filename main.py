@@ -1,6 +1,5 @@
 import datetime
 import os.path
-
 from flask import Flask, render_template, url_for, jsonify, make_response, request, redirect
 from flask_restful import reqparse, abort, Api, Resource
 from data import db_session
@@ -15,6 +14,7 @@ from data.user import Users
 from data.adverts import Advert
 from data.adverts_images import AdvertsImages
 import config
+import pymorphy3
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
@@ -22,6 +22,7 @@ app.config['UPLOAD_FOLDER'] = config.UPLOAD_FOLDERS
 api = Api(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
+morph = pymorphy3.MorphAnalyzer()
 
 
 @login_manager.user_loader
@@ -33,11 +34,29 @@ def load_user(user_id):
 n = 0
 
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def index():
     session = db_session.create_session()
-    adverts = session.query(AdvertsImages).all()
-    advert = session.query(Advert).all()
+    if request.method == 'POST':
+        query_words = []
+        advert = []
+        for word in request.form['query'].split():
+            parsed_word = morph.parse(word)[0]
+            if 'NOUN' in parsed_word.tag or 'ADJF' in parsed_word.tag or 'VERB' in parsed_word.tag:
+                processed_word = parsed_word.inflect({'nomn'}).word
+                query_words.append(processed_word)
+        adverts = session.query(Advert).all()
+        for i in adverts:
+            processed_words = []
+            for word in i.title.split():
+                parsed_word = morph.parse(word)[0]
+                if 'NOUN' in parsed_word.tag or 'ADJF' in parsed_word.tag or 'VERB' in parsed_word.tag:
+                    processed_word = parsed_word.inflect({'nomn'}).word
+                    processed_words.append(processed_word)
+            if set(processed_words).intersection(set(query_words)) or set(i.title.split()).intersection(set(request.form['query'].split())):
+                advert.append(i)
+    else:
+        advert = session.query(Advert).all()
     smt = []
     photo = []
     photos = []
