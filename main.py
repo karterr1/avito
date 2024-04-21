@@ -36,7 +36,6 @@ n = 0
 @app.route('/')
 def index():
     session = db_session.create_session()
-    adverts = session.query(AdvertsImages).all()
     advert = session.query(Advert).all()
     smt = []
     photo = []
@@ -57,7 +56,7 @@ def index():
             n = 1
         if i == len(smt):
             if n % 5 != 0:
-                photos.append(photo)  # мы не знаем что это, но это работает
+                photos.append(photo)
             else:
                 photos.append(smt[i - 1])
     return render_template('index.html', title='Вы тут найдете всё', photos=photos, photo=photo)
@@ -70,13 +69,10 @@ def profile(id):
     user = session.query(Users).filter(Users.id == id).first()
     adverts = session.query(Advert).filter(Advert.user_id == id)
     for i in adverts:
-        photo = []
-        advert_image = session.query(AdvertsImages).filter(AdvertsImages.advert_id == i.id)
-        for j in advert_image:
-            photo.append(j.path)
-        n = i, photo
+        image = session.query(AdvertsImages).filter(AdvertsImages.advert_id == i.id).first()
+        n = i, image.path
         images.append(n)
-    if len(images) > 0:
+    for i in images:
         photo = session.query(Users).all()
         return render_template('profile.html', title='Профиль', user=user, photos=photo, advert=images,
                                css1=url_for('static', filename='css/style_profile.css'))
@@ -92,7 +88,8 @@ def advert(advert_id):
     user = session.query(Users).filter(Users.id == advert.user_id).first()
     photos = session.query(AdvertsImages).filter(AdvertsImages.advert_id == advert_id).all()
     return render_template('advert.html', title='Объявление',
-                           css1=url_for('static', filename='css/style_advert.css'), advert=advert, photos=photos, user=user)
+                           css1=url_for('static', filename='css/style_advert.css'), advert=advert, photos=photos,
+                           user=user)
 
 
 @app.route('/register', methods=['GET', 'POST'])

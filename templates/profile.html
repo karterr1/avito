@@ -17,8 +17,9 @@
             </nav>
             <section>
                 <h4>{{user.login}}</h4>
-                <h8>{{user.email}}</h8>
-                <h11>+{{user.phone_number}}</h11>
+                <ul>
+                    <li><h5>{{user.email}}</h5></li>
+                    <li><h5>+{{user.phone_number}}</h5></li></ul>
             </section>
         </div>
         </nav>
@@ -26,10 +27,8 @@
             <h2>Ваши объявления</h2>
             <hr style="position: relative; left: -500px;" width="178%" color="black"/>
             {% for i in advert %}
-            {% for j in i[1] %}
-            <p><img src="/{{j}}" alt="изображение" height="200" width="300"></p>
-            {% endfor %}
-            <a href="/advert/{{i[0].id}}" style="text-decoration: none"><h3 style="color: white">{{i[0].title}}</h3></a>
+            <p><img src="/{{i[1]}}" alt="изображение" height="200" width="300"></p>
+            <a href="/advert/{{i[0].id}}"><h3>{{i[0].title}}</h3></a>
             <h5>{{i[0].price}}₽</h5>
             <hr width="50%" color="black"/>
             {% endfor %}
