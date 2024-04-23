@@ -52,8 +52,10 @@ def index():
                 parsed_word = morph.parse(word)[0]
                 if 'NOUN' in parsed_word.tag or 'ADJF' in parsed_word.tag or 'VERB' in parsed_word.tag:
                     processed_word = parsed_word.inflect({'nomn'}).word
+
                     processed_words.append(processed_word)
-            if set(processed_words).intersection(set(query_words)) or set(i.title.split()).intersection(set(request.form['query'].split())):
+            if set(processed_words).intersection(set(query_words)) or set(i.title.split()).intersection(
+                    set(request.form['query'].split())):
                 advert.append(i)
     else:
         advert = session.query(Advert).all()
@@ -83,7 +85,7 @@ def index():
 
 
 @app.route('/profile/<int:id>')
-def profile(id):
+def profile(id):  # профиль пользователя
     images = []
     session = db_session.create_session()
     user = session.query(Users).filter(Users.id == id).first()
@@ -102,7 +104,7 @@ def profile(id):
 
 
 @app.route('/advert/<int:advert_id>', methods=['GET', 'POST'])
-def advert(advert_id):
+def advert(advert_id):  # окно с информацией про объявление
     session = db_session.create_session()
     advert = session.query(Advert).get(advert_id)
     user = session.query(Users).filter(Users.id == advert.user_id).first()
@@ -113,7 +115,7 @@ def advert(advert_id):
 
 
 @app.route('/register', methods=['GET', 'POST'])
-def register():
+def register():  # регистрация
     form = RegForm()
     if form.validate_on_submit():
         db_sess = db_session.create_session()
@@ -146,7 +148,7 @@ def register():
 
 
 @app.route('/login', methods=['GET', 'POST'])
-def login():
+def login():  # авторизация пользователя
     form = LoginForm()
     if form.validate_on_submit():
         db_sess = db_session.create_session()
@@ -167,7 +169,7 @@ def bad_request(_):
 
 @app.route('/add', methods=['GET', 'POST'])
 @login_required
-def add_adverts():
+def add_adverts():  # добавление объявления
     form = AdvertForm()
     if form.validate_on_submit():
         session = db_session.create_session()
@@ -200,20 +202,20 @@ def add_adverts():
 
 
 @app.errorhandler(401)
-def unauthorized(_):
+def unauthorized(_):  # если пользователь не авторизован
     return redirect('/login')
 
 
 @app.route('/logout')
 @login_required
-def logout():
+def logout():  # выход из аккаунта
     logout_user()
     return redirect("/")
 
 
 @app.route('/delete_advert/<advert_id>')
 @login_required
-def delete_advert(advert_id):
+def delete_advert(advert_id):  # удаление объявления
     session = db_session.create_session()
     advert = session.query(Advert).filter(Advert.id == advert_id).first()
     photos = session.query(AdvertsImages).filter(AdvertsImages.advert_id == advert_id)
@@ -225,7 +227,7 @@ def delete_advert(advert_id):
 
 
 @app.route('/redact_advert/<advert_id>', methods=['POST', 'GET'])
-def redact_advert(advert_id):
+def redact_advert(advert_id):  # редактирование объявления
     form = AdvertForm()
     if form.validate_on_submit():
         session = db_session.create_session()
@@ -246,6 +248,7 @@ def main():
     api.add_resource(UsersResource, '/api/users/<int:users_id>')
     api.add_resource(UsersListResources, '/api/users')
     app.run(port=8080, host='127.0.0.1')
+
 
 if __name__ == '__main__':
     main()
