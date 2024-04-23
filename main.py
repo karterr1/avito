@@ -13,6 +13,7 @@ from flask_login import LoginManager, login_user, logout_user, login_required, c
 from data.user import Users
 from data.adverts import Advert
 from data.adverts_images import AdvertsImages
+from data.category import Category
 import config
 import pymorphy3
 
@@ -38,25 +39,30 @@ n = 0
 def index():
     session = db_session.create_session()
     if request.method == 'POST':
-        query_words = []
-        advert = []
-        for word in request.form['query'].split():
-            parsed_word = morph.parse(word)[0]
-            if 'NOUN' in parsed_word.tag or 'ADJF' in parsed_word.tag or 'VERB' in parsed_word.tag:
-                processed_word = parsed_word.inflect({'nomn'}).word
-                query_words.append(processed_word)
-        adverts = session.query(Advert).all()
-        for i in adverts:
-            processed_words = []
-            for word in i.title.split():
+        if request.form['query'].strip() in config.CATEGORIES:
+            id = session.query(Category).filter(Category.name == request.form['query'].strip()).first().id
+            advert = session.query(Advert).filter(Advert.category_id == id).all()
+            print(advert)
+        else:
+            query_words = []
+            advert = []
+            for word in request.form['query'].split():
                 parsed_word = morph.parse(word)[0]
                 if 'NOUN' in parsed_word.tag or 'ADJF' in parsed_word.tag or 'VERB' in parsed_word.tag:
                     processed_word = parsed_word.inflect({'nomn'}).word
+                    query_words.append(processed_word)
+            adverts = session.query(Advert).all()
+            for i in adverts:
+                processed_words = []
+                for word in i.title.split():
+                    parsed_word = morph.parse(word)[0]
+                    if 'NOUN' in parsed_word.tag or 'ADJF' in parsed_word.tag or 'VERB' in parsed_word.tag:
+                        processed_word = parsed_word.inflect({'nomn'}).word
 
-                    processed_words.append(processed_word)
-            if set(processed_words).intersection(set(query_words)) or set(i.title.split()).intersection(
-                    set(request.form['query'].split())):
-                advert.append(i)
+                        processed_words.append(processed_word)
+                if set(processed_words).intersection(set(query_words)) or set(i.title.split()).intersection(
+                        set(request.form['query'].split())):
+                    advert.append(i)
     else:
         advert = session.query(Advert).all()
     smt = []
