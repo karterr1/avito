@@ -6,7 +6,7 @@ from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy import orm
 
 
-class Advert(SqlAlchemyBase, UserMixin, SerializerMixin):
+class Advert(SqlAlchemyBase, UserMixin, SerializerMixin):  # orm-модель таблицы объявлений
     __tablename__ = 'adverts'
 
     id = sqlalchemy.Column(sqlalchemy.Integer,

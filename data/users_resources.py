@@ -1,9 +1,8 @@
-from flask_restful import reqparse, abort, Api, Resource
+from flask_restful import reqparse, abort, Resource
 from . import db_session
 from .user import Users
 from flask import jsonify
 from datetime import datetime
-from flask import request, make_response
 
 parser = reqparse.RequestParser()
 parser.add_argument('login', required=True)

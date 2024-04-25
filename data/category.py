@@ -6,7 +6,7 @@ from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy import orm
 
 
-class Category(SqlAlchemyBase, UserMixin, SerializerMixin):
+class Category(SqlAlchemyBase, UserMixin, SerializerMixin):  # модель таблицы категорий
     __tablename__ = 'categories'
 
     id = sqlalchemy.Column(sqlalchemy.Integer,

@@ -1,7 +1,7 @@
 import datetime
 import os.path
 from flask import Flask, render_template, url_for, jsonify, make_response, request, redirect
-from flask_restful import reqparse, abort, Api, Resource
+from flask_restful import Api
 from data import db_session
 from data.users_resources import UsersResource, UsersListResources
 from forms.login_form import LoginForm
@@ -35,16 +35,15 @@ def load_user(user_id):
 n = 0
 
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/', methods=['GET', 'POST'])  # обработчик главного экрана
 def index():
     session = db_session.create_session()
     if request.method == 'POST':
-        if request.form['query'].strip() in config.CATEGORIES:
+        if request.form['query'].strip() in config.CATEGORIES:  # если пользователь ввел название одной из категорий
             id = session.query(Category).filter(Category.name == request.form['query'].strip()).first().id
             advert = session.query(Advert).filter(Advert.category_id == id).all()
-            print(advert)
         else:
-            query_words = []
+            query_words = []  # поиск по объявлениям в базе данных
             advert = []
             for word in request.form['query'].split():
                 parsed_word = morph.parse(word)[0]
@@ -69,7 +68,7 @@ def index():
     photo = []
     photos = []
     n = 0
-    for i in advert:
+    for i in advert:  # получение изображений
         image = session.query(AdvertsImages).filter(AdvertsImages.advert_id == i.id).first()
         name = image.path, i.title, i.price, i.id
         smt.append(name)
@@ -90,8 +89,8 @@ def index():
     return render_template('index.html', title='Вы тут найдете всё', photos=photos, photo=photo)
 
 
-@app.route('/profile/<int:id>')
-def profile(id):  # профиль пользователя
+@app.route('/profile/<int:id>')  # обработчик профиля пользователя
+def profile(id):
     images = []
     session = db_session.create_session()
     user = session.query(Users).filter(Users.id == id).first()
@@ -125,20 +124,20 @@ def register():  # регистрация
     form = RegForm()
     if form.validate_on_submit():
         db_sess = db_session.create_session()
-        if db_sess.query(Users).filter(Users.email == form.email.data).first():
+        if db_sess.query(Users).filter(Users.email == form.email.data).first():  # проверка логина и пароля пользователя
             return render_template('registration.html', title='Регистрация', form=form, message='такая почта уже есть')
         if db_sess.query(Users).filter(Users.login == form.login.data).first():
             return render_template('registration.html', title='Регистрация', form=form, message='такой логин уже есть')
         if form.password.data != form.password_again.data:
             return render_template('registration.html', title='Регистрация', form=form, message='пароли не совпадают')
         if request.files['file']:
-            file = request.files['file']
+            file = request.files['file']  # добавление изображения профиля в бд
             filename = secure_filename(file.filename)
             path = normpath(join(app.config['UPLOAD_FOLDER']['PROFILE_IMAGES_FOLDER'], filename))
             file.save(path)
         else:
             path = join(app.config['UPLOAD_FOLDER']['PROFILE_IMAGES_FOLDER'], 'default_image.png')
-        user = Users(
+        user = Users(  # добавление пользователя
             login=form.login.data,
             email=form.email.data,
             photo=path,
@@ -168,7 +167,7 @@ def login():  # авторизация пользователя
     return render_template('login.html', form=form, title='Авторизация')
 
 
-@app.errorhandler(400)
+@app.errorhandler(400)  # обработчик ошибки 400
 def bad_request(_):
     return make_response(jsonify({'error': 'Bad Request'}), 400)
 
@@ -193,7 +192,7 @@ def add_adverts():  # добавление объявления
         session.add(advert)
         session.commit()
         files = request.files.getlist('files')
-        for file in files:
+        for file in files:  # добавление изображения
             filename = secure_filename(file.filename)
             path = normpath(join(app.config['UPLOAD_FOLDER']['ADVERTS_IMAGES_FOLDER'], filename))
             if not os.path.isfile(path):
@@ -208,7 +207,7 @@ def add_adverts():  # добавление объявления
 
 
 @app.errorhandler(401)
-def unauthorized(_):  # если пользователь не авторизован
+def unauthorized(_):  # обработка ошибки, если пользователь не авторизован
     return redirect('/login')
 
 

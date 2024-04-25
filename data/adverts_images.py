@@ -6,7 +6,7 @@ from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy import orm
 
 
-class AdvertsImages(SqlAlchemyBase, UserMixin, SerializerMixin):
+class AdvertsImages(SqlAlchemyBase, UserMixin, SerializerMixin):  # модель таблицы изображений для объявлений
     __tablename__ = 'adverts_images'
 
     id = sqlalchemy.Column(sqlalchemy.Integer,
