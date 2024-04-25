@@ -40,7 +40,7 @@
     </p>
     <p>
         {{ form.phone_number.label }}<br>
-        {{ form.phone_number(class="form-control", type="password") }}<br>
+        {{ form.phone_number(class="form-control", type="text") }}<br>
         {% for error in form.phone_number.errors %}
             <div class="alert alert-danger" role="alert">
                 {{ error }}
